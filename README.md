@@ -51,6 +51,13 @@ Build output is written to `dist/` and can be deployed to Cloudflare Pages or an
 
 For Cloudflare Pages, use `pnpm build` as the build command, `dist` as the output directory, and Node.js 22 as the build runtime.
 
+The production Pages project is available at <https://cad-3d-viewer.pages.dev/>. To deploy the current build directly:
+
+```bash
+pnpm build
+pnpm deploy:pages
+```
+
 ## License
 
 GPL-2.0-only. See `LICENSE` and `THIRD_PARTY_NOTICES.md`.
