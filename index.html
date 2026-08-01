@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f4f1" />
+    <title>CAD3D Viewer</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">C3</div>
+          <div class="brand-copy">
+            <strong>CAD3D Viewer</strong>
+            <span id="file-name">本地三维评审</span>
+          </div>
+        </div>
+
+        <div class="center-controls">
+          <select id="region-select" class="region-select is-hidden" aria-label="建模区域"></select>
+          <div class="mode-switcher" role="group" aria-label="模型显示模式">
+            <button type="button" data-mode="solid" class="is-active" aria-pressed="true">实体</button>
+            <button type="button" data-mode="linework" aria-pressed="false">线框</button>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <label class="command-button" for="file-input" role="button" tabindex="0">
+            <i data-lucide="upload"></i><span>打开图纸</span>
+          </label>
+          <button type="button" class="icon-button" id="top-view" aria-label="俯视图" data-tooltip="俯视图" disabled>
+            <i data-lucide="map"></i>
+          </button>
+          <button type="button" class="icon-button" id="fit-view" aria-label="适应视图" data-tooltip="适应视图" disabled>
+            <i data-lucide="scan"></i>
+          </button>
+          <button type="button" class="icon-button" id="download-glb" aria-label="下载当前 GLB" data-tooltip="下载 GLB" disabled>
+            <i data-lucide="download"></i>
+          </button>
+          <button type="button" class="icon-button mobile-only" id="toggle-layers" aria-label="显示图层面板" data-tooltip="图层">
+            <i data-lucide="layers-3"></i>
+          </button>
+          <button type="button" class="icon-button mobile-only" id="toggle-inspector" aria-label="显示检查面板" data-tooltip="检查面板">
+            <i data-lucide="panel-right"></i>
+          </button>
+        </div>
+        <input id="file-input" class="file-input-native" type="file" accept=".dwg,.dxf" />
+      </header>
+
+      <main class="workspace">
+        <aside class="layer-panel" id="layer-panel" aria-labelledby="layers-title">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">解析结果</span>
+              <h2 id="layers-title">图层</h2>
+            </div>
+            <div class="panel-header-actions">
+              <span class="count-badge" id="layer-count">0</span>
+              <button type="button" class="icon-button mobile-only" id="close-layers" aria-label="关闭图层面板">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+          </div>
+          <div class="layer-summary" id="layer-summary">
+            <span>等待图纸</span>
+          </div>
+          <div class="layer-list" id="layer-list"></div>
+        </aside>
+
+        <section id="viewer" aria-label="CAD 三维模型浏览器">
+          <canvas id="scene-canvas"></canvas>
+
+          <div class="empty-state" id="empty-state">
+            <div class="drop-zone" id="drop-zone">
+              <i data-lucide="file-up" aria-hidden="true"></i>
+              <h1>上传 DWG 或 DXF</h1>
+              <p>文件仅在当前浏览器中处理</p>
+              <label class="primary-button" for="file-input" role="button" tabindex="0">
+                <i data-lucide="folder-open"></i><span>选择文件</span>
+              </label>
+              <small>DWG · ASCII DXF</small>
+            </div>
+          </div>
+
+          <div class="processing-state is-hidden" id="processing-state" role="status" aria-live="polite">
+            <div class="progress-track"><span id="progress-bar"></span></div>
+            <strong id="progress-title">准备转换</strong>
+            <span id="progress-detail">读取本地文件</span>
+          </div>
+
+          <div class="error-state is-hidden" id="error-state" role="alert">
+            <i data-lucide="circle-alert"></i>
+            <strong>无法处理这份图纸</strong>
+            <p id="error-message"></p>
+            <label class="secondary-button" for="file-input" role="button" tabindex="0">选择其它文件</label>
+          </div>
+
+          <div class="view-toolbar is-hidden" id="view-toolbar">
+            <label><input type="checkbox" id="toggle-grid" checked /><span>网格</span></label>
+            <label><input type="checkbox" id="toggle-shadows" checked /><span>阴影</span></label>
+          </div>
+
+          <div class="cursor-position is-hidden" id="cursor-position">X 0.0 · Z 0.0</div>
+        </section>
+
+        <aside class="inspector-panel" id="inspector-panel">
+          <div class="panel-header inspector-heading">
+            <div>
+              <span class="eyebrow">模型检查</span>
+              <h2>属性与报告</h2>
+            </div>
+            <button type="button" class="icon-button mobile-only" id="close-inspector" aria-label="关闭检查面板">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <div class="status-block">
+            <div class="status-row">
+              <span class="status-dot"></span>
+              <strong id="model-status">尚未加载</strong>
+            </div>
+            <p id="model-summary">上传图纸后显示解析和建模结果。</p>
+          </div>
+
+          <div class="metric-grid">
+            <div><span>源图元</span><strong id="metric-entities">--</strong></div>
+            <div><span>实体对象</span><strong id="metric-objects">--</strong></div>
+            <div><span>检查项</span><strong id="metric-issues">--</strong></div>
+          </div>
+
+          <section class="inspector-section">
+            <div class="section-title-row">
+              <h3>对象信息</h3>
+              <span class="status-badge" id="selection-status">未选择</span>
+            </div>
+            <div class="empty-selection" id="empty-selection">
+              <i data-lucide="mouse-pointer-2"></i>
+              <span>选择实体查看识别参数</span>
+            </div>
+            <dl class="property-list" id="property-list" hidden></dl>
+          </section>
+
+          <section class="inspector-section report-section">
+            <div class="section-title-row">
+              <h3>建模报告</h3>
+              <button type="button" class="text-button" id="download-report" disabled>导出</button>
+            </div>
+            <div class="report-list" id="report-list">
+              <p class="muted-copy">暂无检查信息</p>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="status-bar">
+        <div><span class="status-dot"></span><span id="footer-status">等待本地文件</span></div>
+        <div><span id="unit-status">单位 --</span></div>
+        <div class="desktop-only"><span>文件不会上传或保存</span></div>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
