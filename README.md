@@ -34,7 +34,7 @@ pnpm install
 pnpm dev
 ```
 
-During pre-release development, `package.json` links `../cad3d-cli` and `../cad3d-modeler`. Keep the three repositories as sibling directories. These links will be replaced with npm versions when the new packages are published.
+The converter and modeler are installed from npm, so this repository can be cloned, built, and deployed independently.
 
 Open the local URL printed by Vite. The included `public/libredwg/libredwg-web.wasm` asset is required for DWG parsing.
 
@@ -48,6 +48,8 @@ pnpm build
 ## Static deployment
 
 Build output is written to `dist/` and can be deployed to Cloudflare Pages or any static host. No Functions or server runtime is required.
+
+For Cloudflare Pages, use `pnpm build` as the build command, `dist` as the output directory, and Node.js 22 as the build runtime.
 
 ## License
 

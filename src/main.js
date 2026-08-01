@@ -177,10 +177,15 @@ elements["toggle-shadows"].addEventListener("change", applyShadowSetting);
 elements["download-glb"].addEventListener("click", downloadCurrentGlb);
 elements["download-report"].addEventListener("click", downloadReport);
 elements["region-select"].addEventListener("change", () => setRegion(elements["region-select"].value));
-elements["toggle-inspector"].addEventListener("click", () => elements["inspector-panel"].classList.add("is-open"));
-elements["close-inspector"].addEventListener("click", () => elements["inspector-panel"].classList.remove("is-open"));
-elements["toggle-layers"].addEventListener("click", () => elements["layer-panel"].classList.add("is-open"));
-elements["close-layers"].addEventListener("click", () => elements["layer-panel"].classList.remove("is-open"));
+elements["toggle-inspector"].addEventListener("click", () => toggleMobilePanel("inspector", "layers"));
+elements["close-inspector"].addEventListener("click", () => setMobilePanelOpen("inspector", false));
+elements["toggle-layers"].addEventListener("click", () => toggleMobilePanel("layers", "inspector"));
+elements["close-layers"].addEventListener("click", () => setMobilePanelOpen("layers", false));
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  setMobilePanelOpen("layers", false);
+  setMobilePanelOpen("inspector", false);
+});
 
 elements["scene-canvas"].addEventListener("pointerdown", (event) => {
   pointerDown = { x: event.clientX, y: event.clientY };
@@ -207,6 +212,19 @@ renderer.setAnimationLoop(() => {
   controls.update();
   composer.render();
 });
+
+function toggleMobilePanel(panelName, otherPanelName) {
+  const panel = elements[`${panelName === "layers" ? "layer" : panelName}-panel`];
+  const shouldOpen = !panel.classList.contains("is-open");
+  if (shouldOpen) setMobilePanelOpen(otherPanelName, false);
+  setMobilePanelOpen(panelName, shouldOpen);
+}
+
+function setMobilePanelOpen(panelName, open) {
+  const panelId = panelName === "layers" ? "layer-panel" : "inspector-panel";
+  elements[panelId].classList.toggle("is-open", open);
+  elements[`toggle-${panelName}`].setAttribute("aria-expanded", String(open));
+}
 
 async function convertFile(file) {
   const extension = file.name.split(".").pop()?.toLowerCase();

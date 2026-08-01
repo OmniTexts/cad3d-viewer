@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@omnitexts/cad3d-cli':
-        specifier: file:../cad3d-cli
-        version: file:../cad3d-cli
+        specifier: ^0.2.0
+        version: 0.2.0
       '@omnitexts/cad3d-modeler':
-        specifier: file:../cad3d-modeler
-        version: file:../cad3d-modeler
+        specifier: ^0.1.0
+        version: 0.1.0
       lucide:
         specifier: ^1.27.0
         version: 1.28.0
@@ -186,13 +186,13 @@ packages:
   '@mlightcad/libredwg-web@0.4.6':
     resolution: {integrity: sha512-YkJv9vtB6GLE9EYHpKm/49kdsyIqQmmnLykEEKBUZezIhoUUM79aZTjW/Ct9twsfJOnEYIYdrduuTqEscZ8ivw==}
 
-  '@omnitexts/cad3d-cli@file:../cad3d-cli':
-    resolution: {directory: ../cad3d-cli, type: directory}
+  '@omnitexts/cad3d-cli@0.2.0':
+    resolution: {integrity: sha512-e8VX0mGoq+p1l8OVxYSFIEtufEW6g6T4Ld1WQEzR74PotO6keFmT3UzJt8OPsnncjcoD8WabyLXw8HYLphtU4w==}
     engines: {node: '>=20'}
     hasBin: true
 
-  '@omnitexts/cad3d-modeler@file:../cad3d-modeler':
-    resolution: {directory: ../cad3d-modeler, type: directory}
+  '@omnitexts/cad3d-modeler@0.1.0':
+    resolution: {integrity: sha512-wy0E+Dy6jW6GifKFD1OhRKiBP0FoeeOCbpJngcZwKogGbRumEvHVEKIzGP7R2N+oVZmcgTIHz8COZ5+Ut8b/BQ==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -520,13 +520,13 @@ snapshots:
 
   '@mlightcad/libredwg-web@0.4.6': {}
 
-  '@omnitexts/cad3d-cli@file:../cad3d-cli':
+  '@omnitexts/cad3d-cli@0.2.0':
     dependencies:
       '@mlightcad/libredwg-web': 0.4.6
       dxf-parser: 1.1.2
       three: 0.180.0
 
-  '@omnitexts/cad3d-modeler@file:../cad3d-modeler':
+  '@omnitexts/cad3d-modeler@0.1.0':
     dependencies:
       three: 0.180.0
 
