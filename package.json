@@ -1,6 +1,6 @@
 {
   "name": "cad3d-viewer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -22,8 +22,6 @@
   },
   "homepage": "https://github.com/OmniTexts/cad3d-viewer#readme",
   "dependencies": {
-    "@omnitexts/cad3d-cli": "^0.2.0",
-    "@omnitexts/cad3d-modeler": "^0.1.0",
     "lucide": "^1.27.0",
     "three": "^0.180.0"
   },

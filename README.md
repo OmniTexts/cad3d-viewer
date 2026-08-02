@@ -1,31 +1,31 @@
 # cad3d-viewer
 
-An independent, static Three.js application that converts and reviews DWG or ASCII DXF files entirely in the browser.
+A focused, static Three.js viewer for reviewing solid GLB models produced by the CAD3D toolchain.
 
 ## Pipeline
 
 ```text
-local File
-  -> @omnitexts/cad3d-cli (Web Worker)
-  -> normalized drawing + layer linework GLB
-  -> @omnitexts/cad3d-modeler (same Web Worker)
-  -> semantic model + modeling report + solid GLB
-  -> Three.js viewer
+DWG or DXF
+  -> cad3d-build-model Skill
+  -> @omnitexts/cad3d-cli
+  -> @omnitexts/cad3d-modeler
+  -> model.glb
+  -> cad3d-viewer
 ```
 
-The uploaded file is not sent to a server or stored by the application.
+The viewer reads the selected GLB directly in the browser. The model is not uploaded to or stored by the application.
 
 ## Features
 
-- DWG and ASCII DXF upload or drag-and-drop;
-- off-main-thread parsing, normalization, semantic analysis, and GLB generation;
-- solid and layer-organized linework modes;
-- automatic separation of spatially distant plan alternatives into review regions;
-- CAD layer visibility controls;
-- PBR materials, environment lighting, soft shadows, ambient occlusion, ACES tone mapping, SMAA, sky, and ground;
-- selectable semantic objects with source layer, confidence, dimensions, and parameter source;
-- modeling issue report and local GLB/report downloads;
-- responsive desktop and mobile review workspace.
+- local GLB selection and drag-and-drop;
+- PBR material rendering with image-based environment lighting;
+- daylight, studio, and dusk presentation environments;
+- soft shadows, GTAO ambient occlusion, ACES tone mapping, and SMAA;
+- dynamically sized ground, grid, fog, camera range, and shadow frustum;
+- automatic framing, top view, fullscreen, auto-rotation, and PNG capture;
+- CAD3D spatial-region selection from glTF extras;
+- semantic building selection and model statistics from embedded metadata;
+- responsive desktop and mobile presentation views.
 
 ## Development
 
@@ -34,9 +34,7 @@ pnpm install
 pnpm dev
 ```
 
-The converter and modeler are installed from npm, so this repository can be cloned, built, and deployed independently.
-
-Open the local URL printed by Vite. The included `public/libredwg/libredwg-web.wasm` asset is required for DWG parsing.
+Open the local URL printed by Vite and select a `.glb` file.
 
 ## Verify
 
@@ -45,18 +43,16 @@ pnpm test
 pnpm build
 ```
 
-## Static deployment
+## Cloudflare Pages
 
-Build output is written to `dist/` and can be deployed to Cloudflare Pages or any static host. No Functions or server runtime is required.
-
-For Cloudflare Pages, use `pnpm build` as the build command, `dist` as the output directory, and Node.js 22 as the build runtime.
-
-The production Pages project is available at <https://cad-3d-viewer.pages.dev/>. To deploy the current build directly:
+The production project is available at <https://cad-3d-viewer.pages.dev/>.
 
 ```bash
 pnpm build
 pnpm deploy:pages
 ```
+
+The application is fully static and requires no Pages Functions or server-side storage.
 
 ## License
 
