@@ -38,6 +38,9 @@
           <button type="button" class="icon-button" id="fullscreen-view" aria-label="全屏" data-tooltip="全屏">
             <i data-lucide="maximize-2"></i>
           </button>
+          <button type="button" class="icon-button" id="toggle-layers" aria-label="显示图层" aria-controls="layers-panel" aria-expanded="false" data-tooltip="图层" disabled>
+            <i data-lucide="layers-3"></i>
+          </button>
           <button type="button" class="icon-button" id="toggle-info" aria-label="显示模型信息" aria-controls="info-panel" aria-expanded="false" data-tooltip="模型信息" disabled>
             <i data-lucide="panel-right"></i>
           </button>
@@ -82,6 +85,18 @@
           <div><strong id="scene-title">模型已就绪</strong><span id="scene-meta">--</span></div>
         </div>
 
+        <aside class="layers-panel is-hidden" id="layers-panel" aria-labelledby="layers-title">
+          <div class="layers-heading">
+            <div><span>DISPLAY CONTROL</span><h2 id="layers-title">图层</h2></div>
+            <i data-lucide="layers-3"></i>
+          </div>
+          <div class="render-mode" role="group" aria-label="渲染风格">
+            <button type="button" id="mode-planning" aria-pressed="false">规划</button>
+            <button type="button" id="mode-presentation" class="is-active" aria-pressed="true">展示</button>
+          </div>
+          <div class="layer-controls" id="layer-controls"></div>
+        </aside>
+
         <div class="view-controls is-hidden" id="view-controls" aria-label="显示设置">
           <label class="environment-control">
             <i data-lucide="sun"></i>
@@ -119,7 +134,7 @@
 
           <div class="model-status">
             <span class="status-icon"><i data-lucide="badge-check"></i></span>
-            <div><strong>GLB 已载入</strong><span id="model-format">glTF 2.0</span></div>
+            <div><strong id="model-status-label">GLB 已载入</strong><span id="model-format">glTF 2.0</span></div>
           </div>
 
           <dl class="stat-grid">
@@ -132,6 +147,11 @@
           <section class="panel-section">
             <div class="section-heading"><h3>模型范围</h3><span id="model-units">m</span></div>
             <dl class="property-list" id="model-properties"></dl>
+          </section>
+
+          <section class="panel-section is-hidden" id="contract-section">
+            <div class="section-heading"><h3>CAD3D 协议</h3><span id="contract-version">--</span></div>
+            <dl class="property-list" id="contract-properties"></dl>
           </section>
 
           <section class="panel-section selection-section">

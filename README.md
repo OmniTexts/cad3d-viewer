@@ -18,14 +18,19 @@ The viewer reads the selected GLB directly in the browser. The model is not uplo
 ## Features
 
 - local GLB selection and drag-and-drop;
-- PBR material rendering with image-based environment lighting;
+- CAD3D semantic-model 1.1 and legacy factory-demo scheme compatibility;
+- B/C/D or modeler region selection plus semantic layer controls;
+- original/planning materials and enhanced presentation materials;
+- CC0 HDR image-based lighting and procedural wall, roof, concrete, asphalt, and grass textures;
 - daylight, studio, and dusk presentation environments;
 - soft shadows, GTAO ambient occlusion, ACES tone mapping, and SMAA;
 - dynamically sized ground, grid, fog, camera range, and shadow frustum;
 - automatic framing, top view, fullscreen, auto-rotation, and PNG capture;
-- CAD3D spatial-region selection from glTF extras;
-- semantic building selection and model statistics from embedded metadata;
+- semantic building selection with height, eave, roof, floor, bay-spacing, provenance, confidence, and assumption metadata;
+- protocol status, capabilities, site-object counts, and review-state display from glTF extras;
 - responsive desktop and mobile presentation views.
+
+The viewer does not parse DWG or DXF. Conversion and diagnosis happen before upload through `cad3d-build-model`, `cad3d-cli`, and `cad3d-modeler`. GLB files remain local to the browser.
 
 ## Development
 
